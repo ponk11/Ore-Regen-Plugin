@@ -1,0 +1,17 @@
+# OreRegenerator Configuration
+# Configured for ponkstars
+
+# The default time (in seconds) it takes for an ore to regenerate
+regen-delay: 30
+
+# Settings for the region selector tool
+wand:
+  item: "BLAZE_ROD"
+  display-name: "&eRegen Wand"
+
+# Messages sent to players in-game
+messages:
+  no-permission: "&cYou do not have permission to break standard blocks in this region!"
+  wand-given: "&aYou have been given the Regen Wand!"
+  position-1: "&aPosition 1 set!"
+  position-2: "&aPosition 2 set!"

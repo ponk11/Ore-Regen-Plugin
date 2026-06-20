@@ -1,0 +1,8 @@
+com/ponkstars/oreregen/managers/RegenManager$1.class
+com/ponkstars/oreregen/commands/RegenCommand.class
+com/ponkstars/oreregen/managers/RegenManager.class
+com/ponkstars/oreregen/menu/SelectionGUI.class
+com/ponkstars/oreregen/OreRegenerator.class
+com/ponkstars/oreregen/managers/RegionManager.class
+com/ponkstars/oreregen/listeners/WandListener.class
+com/ponkstars/oreregen/listeners/BlockBreakListener.class

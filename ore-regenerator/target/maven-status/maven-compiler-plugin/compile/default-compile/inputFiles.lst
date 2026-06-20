@@ -1,0 +1,7 @@
+/workspaces/Ore-Regen-Plugin/ore-regenerator/src/main/java/com/ponkstars/oreregen/managers/RegenManager.java
+/workspaces/Ore-Regen-Plugin/ore-regenerator/src/main/java/com/ponkstars/oreregen/managers/RegionManager.java
+/workspaces/Ore-Regen-Plugin/ore-regenerator/src/main/java/com/ponkstars/oreregen/OreRegenerator.java
+/workspaces/Ore-Regen-Plugin/ore-regenerator/src/main/java/com/ponkstars/oreregen/listeners/WandListener.java
+/workspaces/Ore-Regen-Plugin/ore-regenerator/src/main/java/com/ponkstars/oreregen/menu/SelectionGUI.java
+/workspaces/Ore-Regen-Plugin/ore-regenerator/src/main/java/com/ponkstars/oreregen/commands/RegenCommand.java
+/workspaces/Ore-Regen-Plugin/ore-regenerator/src/main/java/com/ponkstars/oreregen/listeners/BlockBreakListener.java
