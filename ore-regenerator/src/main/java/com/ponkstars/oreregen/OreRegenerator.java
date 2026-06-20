@@ -11,6 +11,9 @@ public class OreRegenerator extends JavaPlugin {
 
     @Override
     public void onEnable() {
+        // Automatically saves the default config.yml from resources if it doesn't exist yet
+        saveDefaultConfig();
+
         RegionManager regionManager = new RegionManager();
         RegenManager regenManager = new RegenManager(this);
 
@@ -19,7 +22,7 @@ public class OreRegenerator extends JavaPlugin {
 
         getCommand("oreregen").setExecutor(new RegenCommand());
 
-        getLogger().info("OreRegen has been fully initialized!");
+        getLogger().info("OreRegen has been fully initialized with config support!");
     }
 
     @Override
