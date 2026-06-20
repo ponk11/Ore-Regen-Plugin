@@ -16,11 +16,43 @@ public class RegenManager {
 
     public RegenManager(JavaPlugin plugin) {
         this.plugin = plugin;
-        // Define what blocks are allowed to regenerate
+        
+        // Coal
+        validOres.add(Material.COAL_ORE);
+        validOres.add(Material.DEEPSLATE_COAL_ORE);
+        
+        // Iron
+        validOres.add(Material.IRON_ORE);
+        validOres.add(Material.DEEPSLATE_IRON_ORE);
+        
+        // Copper
+        validOres.add(Material.COPPER_ORE);
+        validOres.add(Material.DEEPSLATE_COPPER_ORE);
+        
+        // Gold
+        validOres.add(Material.GOLD_ORE);
+        validOres.add(Material.DEEPSLATE_GOLD_ORE);
+        validOres.add(Material.NETHER_GOLD_ORE);
+        
+        // Redstone
+        validOres.add(Material.REDSTONE_ORE);
+        validOres.add(Material.DEEPSLATE_REDSTONE_ORE);
+        
+        // Lapis Lazuli
+        validOres.add(Material.LAPIS_ORE);
+        validOres.add(Material.DEEPSLATE_LAPIS_ORE);
+        
+        // Diamond
         validOres.add(Material.DIAMOND_ORE);
         validOres.add(Material.DEEPSLATE_DIAMOND_ORE);
-        validOres.add(Material.GOLD_ORE);
-        validOres.add(Material.IRON_ORE);
+        
+        // Emerald
+        validOres.add(Material.EMERALD_ORE);
+        validOres.add(Material.DEEPSLATE_EMERALD_ORE);
+        
+        // Nether Quartz & Ancient Debris
+        validOres.add(Material.NETHER_QUARTZ_ORE);
+        validOres.add(Material.ANCIENT_DEBRIS);
     }
 
     public boolean isRegenOre(Material material) {
@@ -31,17 +63,14 @@ public class RegenManager {
         Material originalMaterial = block.getType();
         Location blockLoc = block.getLocation();
         
-        // Change the ore to Bedrock
         block.setType(Material.BEDROCK);
 
-        // Spawn a TextDisplay entity 1.5 blocks above the bedrock for the hologram
         Location spawnLoc = blockLoc.clone().add(0.5, 1.5, 0.5);
         TextDisplay textDisplay = blockLoc.getWorld().spawn(spawnLoc, TextDisplay.class, display -> {
             display.setBillboard(org.bukkit.entity.Display.Billboard.CENTER);
             display.setText("§eRegenerating in: §f" + delaySeconds + "s");
         });
 
-        // Run a repetitive scheduler ticking every 20 server ticks (1 second)
         new BukkitRunnable() {
             int timeLeft = delaySeconds;
 
@@ -50,13 +79,11 @@ public class RegenManager {
                 timeLeft--;
                 
                 if (timeLeft <= 0) {
-                    // Time's up: revert block, drop original ore item, delete text
                     block.setType(originalMaterial);
                     blockLoc.getWorld().dropItemNaturally(blockLoc, new org.bukkit.inventory.ItemStack(originalMaterial));
                     textDisplay.remove();
                     this.cancel();
                 } else {
-                    // Update the floating hologram text string dynamically
                     textDisplay.setText("§eRegenerating in: §f" + timeLeft + "s");
                 }
             }

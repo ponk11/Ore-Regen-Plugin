@@ -14,18 +14,16 @@ public class OreRegenerator extends JavaPlugin {
         RegionManager regionManager = new RegionManager();
         RegenManager regenManager = new RegenManager(this);
 
-        // Register Event Listeners
         getServer().getPluginManager().registerEvents(new BlockBreakListener(regionManager, regenManager), this);
         getServer().getPluginManager().registerEvents(new WandListener(regionManager), this);
 
-        // Register Executive Commands
         getCommand("oreregen").setExecutor(new RegenCommand());
 
-        getLogger().info("OreRegenerator by ponkstars has been fully initialized!");
+        getLogger().info("OreRegen has been fully initialized!");
     }
 
     @Override
     public void onDisable() {
-        getLogger().info("OreRegenerator has been safely disabled!");
+        getLogger().info("OreRegen has been safely disabled!");
     }
 }
