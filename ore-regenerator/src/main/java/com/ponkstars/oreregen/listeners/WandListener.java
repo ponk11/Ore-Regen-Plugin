@@ -8,7 +8,6 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
 
 public class WandListener implements Listener {
 
@@ -19,23 +18,28 @@ public class WandListener implements Listener {
     }
 
     @EventHandler
-    public void onWandUse(PlayerInteractEvent event) {
+    public void onPlayerInteract(PlayerInteractEvent event) {
         Player player = event.getPlayer();
         ItemStack item = event.getItem();
 
-        if (item == null || item.getType() != Material.BLAZE_ROD) return;
-        ItemMeta meta = item.getItemMeta();
-        if (meta == null || !meta.getDisplayName().contains("Regen Wand")) return;
+        // Check if player is holding a wooden hoe (the default selection wand)
+        if (item == null || item.getType() != Material.WOODEN_HOE) {
+            return;
+        }
 
-        if (event.getClickedBlock() == null) return;
-        event.setCancelled(true);
+        // Check if player has permission
+        if (!player.hasPermission("oreregen.admin") && !player.isOp()) {
+            return;
+        }
 
-        if (event.getAction() == Action.LEFT_CLICK_BLOCK) {
-            regionManager.setPosition1(event.getClickedBlock().getLocation());
-            player.sendMessage("§aPosition 1 set!");
-        } else if (event.getAction() == Action.RIGHT_CLICK_BLOCK) {
-            regionManager.setPosition2(event.getClickedBlock().getLocation());
-            player.sendMessage("§aPosition 2 set!");
+        if (event.getAction() == Action.LEFT_CLICK_BLOCK && event.getClickedBlock() != null) {
+            event.setCancelled(true);
+            regionManager.setPos1(event.getClickedBlock().getLocation());
+            player.sendMessage("§aOreRegen: Position 1 set!");
+        } else if (event.getAction() == Action.RIGHT_CLICK_BLOCK && event.getClickedBlock() != null) {
+            event.setCancelled(true);
+            regionManager.setPos2(event.getClickedBlock().getLocation());
+            player.sendMessage("§aOreRegen: Position 2 set!");
         }
     }
 }

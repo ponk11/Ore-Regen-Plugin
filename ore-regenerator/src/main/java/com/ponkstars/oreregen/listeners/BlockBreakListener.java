@@ -2,6 +2,7 @@ package com.ponkstars.oreregen.listeners;
 
 import com.ponkstars.oreregen.managers.RegionManager;
 import com.ponkstars.oreregen.managers.RegenManager;
+import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -29,15 +30,18 @@ public class BlockBreakListener implements Listener {
             return; 
         }
 
-        // 2. If it is a valid ore, handle immediate drops and regeneration
-        if (regenManager.isRegenOre(block.getType())) {
+        // 2. If it is a valid ore, handle immediate drops and regeneration properly
+        Material brokenType = block.getType();
+        if (regenManager.isRegenOre(brokenType)) {
             event.setCancelled(true);
             
-            // Drop items immediately using the tool the player broke it with (respects Fortune/Silk Touch)
-            block.breakNaturally(player.getInventory().getItemInMainHand());
+            // Generate natural drops using the tool without breaking the actual block into air
+            for (org.bukkit.inventory.ItemStack drop : block.getDrops(player.getInventory().getItemInMainHand())) {
+                block.getWorld().dropItemNaturally(block.getLocation(), drop);
+            }
             
-            // Start the regeneration process with an 8-second delay
-            regenManager.startRegeneration(block, 8);
+            // Start the regeneration process passing the exact ore type it used to be
+            regenManager.startRegeneration(block, brokenType, 8);
             return;
         }
 

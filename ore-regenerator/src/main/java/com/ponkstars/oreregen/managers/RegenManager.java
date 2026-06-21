@@ -59,10 +59,10 @@ public class RegenManager {
         return validOres.contains(material);
     }
 
-    public void startRegeneration(Block block, int delaySeconds) {
-        Material originalMaterial = block.getType();
+    public void startRegeneration(Block block, Material originalMaterial, int delaySeconds) {
         Location blockLoc = block.getLocation();
         
+        // Instantly switch it to bedrock
         block.setType(Material.BEDROCK);
 
         Location spawnLoc = blockLoc.clone().add(0.5, 1.5, 0.5);
@@ -79,6 +79,7 @@ public class RegenManager {
                 timeLeft--;
                 
                 if (timeLeft <= 0) {
+                    // Turn it back into the actual physical ore block saved earlier
                     block.setType(originalMaterial);
                     textDisplay.remove();
                     this.cancel();
