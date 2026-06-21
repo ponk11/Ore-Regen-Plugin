@@ -75,7 +75,7 @@ public class RegionManager {
         try {
             config.save(file);
         } catch (IOException e) {
-            plugin.getLogger().severe("Could not save regions.yml!");
+            plugin.getLogger().severe("Could not save regions.yml data file!");
         }
     }
 

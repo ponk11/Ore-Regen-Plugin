@@ -9,6 +9,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
+import org.bukkit.inventory.ItemStack;
 
 public class BlockBreakListener implements Listener {
 
@@ -22,33 +23,32 @@ public class BlockBreakListener implements Listener {
 
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onBlockBreak(BlockBreakEvent event) {
-        Player player = event.getPlayer();
         Block block = event.getBlock();
 
-        // 1. Check if the block is inside the region boundaries
         if (!regionManager.isInRegion(block.getLocation())) {
             return; 
         }
 
-        // 2. If it is a valid ore, handle immediate drops and regeneration properly
+        Player player = event.getPlayer();
         Material brokenType = block.getType();
+
         if (regenManager.isRegenOre(brokenType)) {
             event.setCancelled(true);
             
-            // Generate natural drops using the tool without breaking the actual block into air
-            for (org.bukkit.inventory.ItemStack drop : block.getDrops(player.getInventory().getItemInMainHand())) {
+            // Generate immediate block drops respecting enchantments
+            for (ItemStack drop : block.getDrops(player.getInventory().getItemInMainHand())) {
                 block.getWorld().dropItemNaturally(block.getLocation(), drop);
             }
             
-            // Start the regeneration process passing the exact ore type it used to be
+            // Turn block to bedrock and queue 8-second refresh loop
             regenManager.startRegeneration(block, brokenType, 8);
             return;
         }
 
-        // 3. If it's a regular block, protect it
-        if (!player.hasPermission("oreregen.admin") && !player.isOp()) {
+        // Lock standard blocks inside the region bounds
+        if (!player.isOp() && !player.hasPermission("oreregen.admin")) {
             event.setCancelled(true);
-            player.sendMessage("§cYou cannot break standard blocks in this region!");
+            player.sendMessage("§cYou cannot break environmental blocks inside this region!");
         }
     }
 }
