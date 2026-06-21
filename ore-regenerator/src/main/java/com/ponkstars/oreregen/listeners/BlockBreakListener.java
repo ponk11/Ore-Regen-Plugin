@@ -24,19 +24,24 @@ public class BlockBreakListener implements Listener {
         Player player = event.getPlayer();
         Block block = event.getBlock();
 
-        // 1. Force check if the block is inside the region boundaries
+        // 1. Check if the block is inside the region boundaries
         if (!regionManager.isInRegion(block.getLocation())) {
             return; 
         }
 
-        // 2. If it is a valid ore, handle the regeneration loop
+        // 2. If it is a valid ore, handle immediate drops and regeneration
         if (regenManager.isRegenOre(block.getType())) {
             event.setCancelled(true);
-            regenManager.startRegeneration(block, 30);
+            
+            // Drop items immediately using the tool the player broke it with (respects Fortune/Silk Touch)
+            block.breakNaturally(player.getInventory().getItemInMainHand());
+            
+            // Start the regeneration process with an 8-second delay
+            regenManager.startRegeneration(block, 8);
             return;
         }
 
-        // 3. If it's a regular block, explicitly cancel it unless they are OP or have admin perms
+        // 3. If it's a regular block, protect it
         if (!player.hasPermission("oreregen.admin") && !player.isOp()) {
             event.setCancelled(true);
             player.sendMessage("§cYou cannot break standard blocks in this region!");

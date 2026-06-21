@@ -80,7 +80,6 @@ public class RegenManager {
                 
                 if (timeLeft <= 0) {
                     block.setType(originalMaterial);
-                    blockLoc.getWorld().dropItemNaturally(blockLoc, new org.bukkit.inventory.ItemStack(originalMaterial));
                     textDisplay.remove();
                     this.cancel();
                 } else {
